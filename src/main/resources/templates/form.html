@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Enter Your Information</title>
+</head>
+<body>
+<center>
+    <h1>Register</h1>
+</center>
+<center>
+    <form th:action="@{/submit}" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="pin">PIN:</label>
+        <input type="number" id="pin" name="pin" required><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</center>
+
+</body>
+</html>
