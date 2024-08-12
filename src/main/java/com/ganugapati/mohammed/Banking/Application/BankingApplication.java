@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BankingApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(BankingApplication.class, args);
+		System.out.println("Banking Application Started");
 	}
 
 }
