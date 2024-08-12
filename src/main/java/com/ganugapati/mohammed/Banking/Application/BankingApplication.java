@@ -10,6 +10,7 @@ public class BankingApplication {
 
 		SpringApplication.run(BankingApplication.class, args);
 		System.out.println("Banking Application Started");
+		System.out.println("am bade bhai sab");
 	}
 
 }
