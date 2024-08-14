@@ -25,8 +25,10 @@ public class FormController {
         postToFirestore(name, Integer.parseInt(pin));
         model.addAttribute("name", name);
         model.addAttribute("pin", pin);
-        return "result"; // This will be a confirmation page you can create
+        return "confirmation"; // This will be a confirmation page you can create
     }
+
+
 
     private void postToFirestore(String name, int pin) {
         Firestore db = FirestoreClient.getFirestore();
