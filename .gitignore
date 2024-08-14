@@ -35,4 +35,4 @@ out/
 
 ### VS Code ###
 .vscode/
-src/main/java/com/ganugapati/mohammed/Banking/Application/serviceAccountKey.json
+./src/main/java/com/ganugapati/mohammed/Banking/Application/serviceAccountKey.json
