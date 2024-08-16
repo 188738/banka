@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Spring Boot Application</title>
+    <link rel="stylesheet">
+</head>
+<body>
+<!-- Navbar -->
+<nav>
+    <ul>
+        <li><a th:href="@{/checking}">Checking</a></li>
+        <li><a th:href="@{/savings}">Saving</a></li>
+        <li><a th:href="@{/transferMoney}">Transfer</a></li>
+    </ul>
+</nav>
+
+<!-- Content -->
+<div th:insert="~{::main}"></div>
+
+</body>
+</html>
