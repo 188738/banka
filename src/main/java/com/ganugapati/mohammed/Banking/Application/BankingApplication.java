@@ -2,8 +2,10 @@ package com.ganugapati.mohammed.Banking.Application;
 
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
@@ -12,9 +14,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -47,6 +49,10 @@ public class BankingApplication {
 		System.out.println("Done");
 		postToFirebase(name, pin);
 		postToFirestore(name, pin);
+
+
+
+
 	}
 	private static void postToFirebase(String name, int pin) {
 		DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");

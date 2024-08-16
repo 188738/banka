@@ -1,6 +1,10 @@
 package com.ganugapati.mohammed.Banking.Application;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -10,8 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @Controller
 public class FormController {
@@ -39,11 +46,33 @@ public class FormController {
     }
 
     @PostMapping("/account")
-    public String goToAccount(@RequestParam String name, Model model, HttpSession session)
+    public String goToAccount(@RequestParam String name, @RequestParam int pin, Model model, HttpSession session)
     {
-        session.setAttribute("userName", name);
-        model.addAttribute("name", name);
-        return "account";
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference users = db.collection("users");
+
+        try{
+            ApiFuture<QuerySnapshot> querySnapshot = users.get();
+            List<User> userList = querySnapshot.get().toObjects(User.class);
+            boolean found = false;
+            for(int i = 0; i<userList.size(); i++){
+                    System.out.println(userList.get(i).getName());
+                    System.out.println(userList.get(i).getId());
+
+
+            }
+            if(found){
+                session.setAttribute("userName", name);
+                model.addAttribute("name", name);
+                return "account";
+
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "login";
+
     }
 
     @GetMapping("/checking")
