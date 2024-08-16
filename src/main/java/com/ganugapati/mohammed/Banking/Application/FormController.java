@@ -15,12 +15,14 @@ import java.util.Map;
 public class FormController {
 
     @GetMapping("/")
-    public String showForm(Model model) {
+    public String showForm(Model model)
+    {
         return "form"; // This corresponds to form.html
     }
 
     @PostMapping("/submit")
-    public String submitForm(@RequestParam String name, @RequestParam String pin, Model model) {
+    public String submitForm(@RequestParam String name, @RequestParam String pin, Model model)
+    {
         // Post to Firestore
         postToFirestore(name, Integer.parseInt(pin));
         model.addAttribute("name", name);
@@ -28,9 +30,36 @@ public class FormController {
         return "confirmation"; // This will be a confirmation page you can create
     }
 
+    @GetMapping("/login")
+    public String goToLogin(Model model)
+    {
+        return "login";
+    }
+
+    @GetMapping("/account")
+    public String goToAccount(Model model)
+    {
+        return "account";
+    }
+
+    @GetMapping("/checking")
+    public String goToChecking(Model model){
+        return "checking";
+    }
+
+    @GetMapping("/savings")
+    public String goToSavings(Model model){
+        return "savings";
+    }
+
+    @GetMapping("/transferMoney")
+    public String goToTransferMoney(Model model){
+        return "transferMoney";
+    }
 
 
-    private void postToFirestore(String name, int pin) {
+    private void postToFirestore(String name, int pin)
+    {
         Firestore db = FirestoreClient.getFirestore();
         Map<String, Object> user = new HashMap<>();
         user.put("name", name);

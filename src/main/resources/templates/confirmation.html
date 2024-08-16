@@ -3,12 +3,20 @@
     <title>Confirmation</title>
 </head>
 <body>
-<h1>
-    Thank you
-    <span th:text="${name}">
+<center>
+    <h1>
+        Thank you
+        <span th:text="${name}">
 
     </span>!
-</h1>
+    </h1>
+</center>
+
+<form th:action="@{/login}" method="get">
+    <button type="submit" style="font-size: 1.25rem; padding: 10px 20px;">
+        Login
+    </button>
+</form>
 
 </body>
 </html>

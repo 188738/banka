@@ -9,7 +9,7 @@ public class User {
         this.name = name;
     }
     public int getId() {
-        return id;
+        return this.id;
     }
     public void setId(int id) {
         this.id = id;
