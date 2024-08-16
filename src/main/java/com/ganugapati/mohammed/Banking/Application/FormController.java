@@ -2,12 +2,14 @@ package com.ganugapati.mohammed.Banking.Application;
 
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,9 +38,11 @@ public class FormController {
         return "login";
     }
 
-    @GetMapping("/account")
-    public String goToAccount(Model model)
+    @PostMapping("/account")
+    public String goToAccount(@RequestParam String name, Model model, HttpSession session)
     {
+        session.setAttribute("userName", name);
+        model.addAttribute("name", name);
         return "account";
     }
 

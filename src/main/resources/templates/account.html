@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+</head>
+<body>
 <center>
-    <h1>Home</h1>
+    <!-- Display the personalized greeting -->
+    <h1>Hello, <span th:text="${session.userName}"></span>!</h1>
+
+    <!-- Form to navigate to the checking page -->
     <form th:action="@{/checking}" method="get">
         <button>
             See finances
         </button>
     </form>
 </center>
+</body>
+</html>
+
