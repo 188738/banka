@@ -203,6 +203,61 @@ public class FormController {
     }
 
 
+    @PostMapping("/withdrawChecking")
+    public String withdrawChecking(@RequestParam double amount, HttpSession session, Model model) {
+        handleWithdrawal(session, model, amount, "checkingBalance"); // Deposit amount and update balance
+        return "checking";
+    }
+
+    @PostMapping("/withdrawSavings")
+    public String withdrawSavings(@RequestParam double amount, HttpSession session, Model model) {
+        handleWithdrawal(session, model, amount, "savingBalance"); // Deposit amount and update balance
+        return "savings";
+    }
+
+
+
+
+    private void handleWithdrawal(HttpSession session, Model model, double withdrawalAmount, String type) {
+        double balance = 0.0;
+        Firestore db = FirestoreClient.getFirestore();
+        String name = (String) session.getAttribute("name");
+
+        try {
+            DocumentSnapshot document = db.collection("users")
+                    .whereEqualTo("name", name)
+                    .get()
+                    .get()
+                    .getDocuments()
+                    .stream()
+                    .findFirst()
+                    .orElse(null);
+
+            if (document != null && document.exists()) {
+                if(type.equals("checkingBalance")) {
+                    balance = document.getDouble("checkingBalance");
+                }
+                else if (type.equals("savingBalance")) {
+                    balance = document.getDouble("savingBalance");
+                }
+
+                // Update balance if deposit amount is greater than 0
+
+                if (withdrawalAmount > 0 && withdrawalAmount < balance) {
+                    balance -= withdrawalAmount;
+                    db.collection("users").document(document.getId())
+                            .update(type, balance);
+                }
+
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        model.addAttribute(type, balance);
+    }
+
+
 
     @GetMapping("/transferMoney")
     public String goToTransferMoney(Model model){

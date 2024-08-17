@@ -72,12 +72,26 @@
         </h2>
         <h3>Your saving balance has $ <span th:text="${savingBalance}"></span>!</h3>
     </center>
+    <br>
+    <br>
+    <br>
+    <center>
+        <form action="/updateSaving" method="post">
+            <label for="amount">Deposit Amount:</label>
+            <input type="number" id="amount" name="amount" step="0.01" required>
+            <button type="submit">Deposit</button>
+        </form>
+        <br>
+        <form action="/withdrawSavings" method="post">
+            <label for="amount">Withdrawal Amount:</label>
+            <label>
+                <input type="number" id="amountB" name="amount" step="0.01" required>
+            </label>
+            <button type="submit">Withdraw</button>
+        </form>
+    </center>
 
-    <form action="/updateSaving" method="post">
-        <label for="amount">Deposit Amount:</label>
-        <input type="number" id="amount" name="amount" step="0.01" required>
-        <button type="submit">Deposit</button>
-    </form>
+
 
 
 </div>
