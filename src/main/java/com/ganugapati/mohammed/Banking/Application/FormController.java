@@ -40,8 +40,9 @@ public class FormController {
     }
 
     @GetMapping("/login")
-    public String goToLogin(Model model)
+    public String goToLogin(Model model, HttpSession session)
     {
+        session.invalidate();
         return "login";
     }
 
