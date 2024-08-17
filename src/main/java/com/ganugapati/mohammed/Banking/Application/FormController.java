@@ -122,44 +122,12 @@ public class FormController {
         return "checking";
     }
 
+
     // method triggered by post request to / update checking in the html file
     @PostMapping("/updateChecking")
     public String updateCheckingBalance(@RequestParam double amount, HttpSession session, Model model) {
-        handleCheckingBalance(session, model, amount); // Deposit amount and update balance
+        handleDeposit(session, model, amount, "checkingBalance"); // Deposit amount and update balance
         return "checking";
-    }
-
-    //helper handleCheckingBalance function to update checking (overload with 'type' input)
-    private void handleCheckingBalance(HttpSession session, Model model, double depositAmount) {
-        double checkingBalance = 0.0;
-        Firestore db = FirestoreClient.getFirestore();
-        String name = (String) session.getAttribute("name");
-
-        try {
-            DocumentSnapshot document = db.collection("users")
-                    .whereEqualTo("name", name)
-                    .get()
-                    .get()
-                    .getDocuments()
-                    .stream()
-                    .findFirst()
-                    .orElse(null);
-
-            if (document != null && document.exists()) {
-                checkingBalance = document.getDouble("checkingBalance");
-
-                // Update balance if deposit amount is greater than 0
-                if (depositAmount > 0) {
-                    checkingBalance += depositAmount;
-                    db.collection("users").document(document.getId())
-                            .update("checkingBalance", checkingBalance);
-                }
-            }
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        model.addAttribute("checkingBalance", checkingBalance);
     }
 
 
@@ -190,8 +158,49 @@ public class FormController {
     }
 
 
+    @PostMapping("/updateSaving")
+    public String updateSavingBalance(@RequestParam double amount, HttpSession session, Model model) {
+        handleDeposit(session, model, amount, "savingBalance"); // Deposit amount and update balance
+        return "savings";
+    }
 
+    //helper handleCheckingBalance function to update checking (overload with 'type' input)
+    private void handleDeposit(HttpSession session, Model model, double depositAmount, String type) {
+        double balance = 0.0;
+        Firestore db = FirestoreClient.getFirestore();
+        String name = (String) session.getAttribute("name");
 
+        try {
+            DocumentSnapshot document = db.collection("users")
+                    .whereEqualTo("name", name)
+                    .get()
+                    .get()
+                    .getDocuments()
+                    .stream()
+                    .findFirst()
+                    .orElse(null);
+
+            if (document != null && document.exists()) {
+                if(type.equals("checkingBalance")) {
+                    balance = document.getDouble("checkingBalance");
+                }
+                else if (type.equals("savingBalance")) {
+                    balance = document.getDouble("savingBalance");
+                }
+
+                // Update balance if deposit amount is greater than 0
+                if (depositAmount > 0) {
+                    balance += depositAmount;
+                    db.collection("users").document(document.getId())
+                            .update(type, balance);
+                }
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        model.addAttribute(type, balance);
+    }
 
 
 
