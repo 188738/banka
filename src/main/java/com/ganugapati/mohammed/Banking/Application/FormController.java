@@ -1,10 +1,7 @@
 package com.ganugapati.mohammed.Banking.Application;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -47,12 +44,45 @@ public class FormController {
     }
 
     @PostMapping("/account")
-    public String goToAccount(@RequestParam String name, @RequestParam int pin, Model model, HttpSession session)
-    {
-        model.addAttribute("name", name);
-        session.setAttribute("name", name);
-        return "account";
+    public String goToAccount(@RequestParam String name, @RequestParam int pin, Model model, HttpSession session) {
+        Firestore db = FirestoreClient.getFirestore();
+        try {
+            // Query the Firestore database to get the user document based on the name
+            DocumentSnapshot document = db.collection("users")
+                    .whereEqualTo("name", name)
+                    .get()
+                    .get()
+                    .getDocuments()
+                    .stream()
+                    .findFirst()
+                    .orElse(null);
 
+            // Check if a matching document was found
+            if (document != null && document.exists()) {
+                // Get the stored PIN from the document
+                int storedPin = document.getLong("pin").intValue();
+
+                // Compare the provided PIN with the stored PIN
+                if (storedPin == pin) {
+                    // Successful login
+                    model.addAttribute("name", name);
+                    session.setAttribute("name", name);
+                    return "account";
+                } else {
+                    // PIN mismatch
+                    model.addAttribute("error", "Invalid PIN");
+                    return "login";
+                }
+            } else {
+                // No document found with the provided name
+                model.addAttribute("error", "No account found with that name");
+                return "login";
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            model.addAttribute("error", "An error occurred during login");
+            return "login";
+        }
     }
 
     @GetMapping("/checking")
