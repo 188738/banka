@@ -125,7 +125,27 @@ public class FormController {
 
     @GetMapping("/savings")
     public String goToSavings(Model model, HttpSession session){
-        String name = (String) model.getAttribute("name");
+        double savingBalance = 0.0;
+        Firestore db = FirestoreClient.getFirestore();
+        String name = (String) session.getAttribute("name");
+
+        try {
+            DocumentSnapshot document = db.collection("users")
+                    .whereEqualTo("name", name)
+                    .get()
+                    .get()
+                    .getDocuments()
+                    .stream()
+                    .findFirst()
+                    .orElse(null);
+
+            if (document != null && document.exists()) {
+                savingBalance = document.getDouble("savingBalance");
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("savingBalance", savingBalance);
         return "savings";
     }
 
