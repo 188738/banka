@@ -48,30 +48,8 @@ public class FormController {
     @PostMapping("/account")
     public String goToAccount(@RequestParam String name, @RequestParam int pin, Model model, HttpSession session)
     {
-        Firestore db = FirestoreClient.getFirestore();
-        CollectionReference users = db.collection("users");
-
-        try{
-            ApiFuture<QuerySnapshot> querySnapshot = users.get();
-            List<User> userList = querySnapshot.get().toObjects(User.class);
-            boolean found = false;
-            for(int i = 0; i<userList.size(); i++){
-                    System.out.println(userList.get(i).getName());
-                    System.out.println(userList.get(i).getId());
-
-
-            }
-            if(found){
-                session.setAttribute("userName", name);
-                model.addAttribute("name", name);
-                return "account";
-
-            }
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return "login";
+        model.addAttribute("name", name);
+        return "account";
 
     }
 
@@ -93,6 +71,7 @@ public class FormController {
 
     private void postToFirestore(String name, int pin)
     {
+
         Firestore db = FirestoreClient.getFirestore();
         Map<String, Object> user = new HashMap<>();
         user.put("name", name);
