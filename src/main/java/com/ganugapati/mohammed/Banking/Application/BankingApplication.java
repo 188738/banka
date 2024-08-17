@@ -67,7 +67,8 @@ public class BankingApplication {
 		// Save the user object under the generated key
 		ref.child(userId).setValueAsync(user);
 	}
-	private static void postToFirestore(String name, int pin){
+	private static void postToFirestore(String name, int pin)
+	{
 		Firestore db = FirestoreClient.getFirestore();
 		Map<String, Object> user = new HashMap<>();
 		user.put("name", name);

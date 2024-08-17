@@ -49,6 +49,7 @@ public class FormController {
     public String goToAccount(@RequestParam String name, @RequestParam int pin, Model model, HttpSession session)
     {
         model.addAttribute("name", name);
+        session.setAttribute("name", name);
         return "account";
 
     }
