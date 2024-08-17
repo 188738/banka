@@ -11,12 +11,16 @@ public class User {
     public User(){
 
     }
-    public int getId() {
+
+    public int getId()
+    {
         return this.id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
