@@ -1,5 +1,6 @@
 package com.ganugapati.mohammed.Banking.Application;
 
+import com.google.api.Http;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
@@ -19,6 +20,7 @@ import java.util.concurrent.ExecutionException;
 
 @Controller
 public class FormController {
+
 
     @GetMapping("/")
     public String showForm(Model model)
@@ -65,8 +67,18 @@ public class FormController {
                 // Compare the provided PIN with the stored PIN
                 if (storedPin == pin) {
                     // Successful login
+
+                    //document is user identity in the firebase
+                    double checkingBalance = document.getDouble("checkingBalance");
+                    double savingBalance = document.getDouble("savingBalance");
+
                     model.addAttribute("name", name);
+                    model.addAttribute("checkingBalance", checkingBalance);
+                    model.addAttribute("savingBalance", savingBalance);
+
                     session.setAttribute("name", name);
+                    session.setAttribute("checkingBalance", checkingBalance);
+                    session.setAttribute("savingBalance", savingBalance);
                     return "account";
                 } else {
                     // PIN mismatch
@@ -86,14 +98,37 @@ public class FormController {
     }
 
     @GetMapping("/checking")
-    public String goToChecking(Model model){
+    public String goToChecking(Model model, HttpSession session){
+        double checkingBalance = 0.0;
+        Firestore db = FirestoreClient.getFirestore();
+        String name = (String) session.getAttribute("name");
+        try {
+            DocumentSnapshot document = db.collection("users")
+                    .whereEqualTo("name", name)
+                    .get()
+                    .get()
+                    .getDocuments()
+                    .stream()
+                    .findFirst()
+                    .orElse(null);
+
+            if (document != null && document.exists()) {
+                checkingBalance = document.getDouble("checkingBalance");
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("checkingBalance", checkingBalance);
         return "checking";
     }
 
+
     @GetMapping("/savings")
-    public String goToSavings(Model model){
+    public String goToSavings(Model model, HttpSession session){
+        String name = (String) model.getAttribute("name");
         return "savings";
     }
+
 
     @GetMapping("/transferMoney")
     public String goToTransferMoney(Model model){
@@ -108,6 +143,8 @@ public class FormController {
         Map<String, Object> user = new HashMap<>();
         user.put("name", name);
         user.put("pin", pin);
+        user.put("checkingBalance", 0.0);
+        user.put("savingBalance", 0.0);
         db.collection("users").add(user);
     }
 }

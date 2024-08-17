@@ -28,7 +28,7 @@ public class BankingApplication {
 		SpringApplication.run(BankingApplication.class, args);
 
 		try {
-			FileInputStream serviceAccount = new FileInputStream("/Users/pigeon/Dropbox/My Mac (Kousthub’s MacBook Pro)/Downloads/BigBhaiSab/src/main/java/com/ganugapati/mohammed/Banking/Application/serviceAccountKey.json");
+			FileInputStream serviceAccount = new FileInputStream("src/main/java/com/ganugapati/mohammed/Banking/Application/serviceAccountKey.json");
 
 			FirebaseOptions options = new FirebaseOptions.Builder()
 					.setCredentials(GoogleCredentials.fromStream(serviceAccount))
