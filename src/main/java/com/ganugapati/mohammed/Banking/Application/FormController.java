@@ -264,7 +264,8 @@ public class FormController {
     }
 
     @PostMapping("/swiftMint")
-    public String transferAcrossAccounts( @RequestParam String amount, @RequestParam String recipient) {
+    public String transferAcrossAccounts(@RequestParam int amount, @RequestParam String recipient, HttpSession session) {
+
         System.out.println("The code reached this place.");
         Firestore db = FirestoreClient.getFirestore();
 
@@ -279,9 +280,57 @@ public class FormController {
                 User user = document.toObject(User.class);
                 userList.add(user);
             }
+            String nameRecipient = "";
             for (int i = 0;i < userList.size();i++){
-                System.out.print(userList.get(i).getName() + " ");
+                if(userList.get(i).getName().equals(recipient)) {
+                    nameRecipient = userList.get(i).getName();
+                    break;
+                }
             }
+            DocumentSnapshot documentTo = db.collection("users")
+                    .whereEqualTo("name", nameRecipient)
+                    .get()
+                    .get()
+                    .getDocuments()
+                    .stream()
+                    .findFirst()
+                    .orElse(null);
+            String name = (String) session.getAttribute("name");
+            DocumentSnapshot documentFrom = db.collection("users")
+                    .whereEqualTo("name", name)
+                    .get()
+                    .get()
+                    .getDocuments()
+                    .stream()
+                    .findFirst()
+                    .orElse(null);
+
+            if ((documentTo != null && documentTo.exists()) && (documentFrom != null && documentFrom.exists())) {
+
+                double balanceRec = documentTo.getDouble("checkingBalance");
+                System.out.println(balanceRec);
+                double balanceCurr = documentFrom.getDouble("checkingBalance");
+                System.out.println(balanceCurr);
+                if(amount > 0 && amount < balanceCurr){
+                    balanceRec+=amount;
+                    balanceCurr-=amount;
+                    ApiFuture<WriteResult> writeResultTo = documentTo.getReference().update("checkingBalance", balanceRec);
+                    System.out.println("Updated recipient's balance: " + balanceRec);
+
+                    // Update the current user's document
+                    ApiFuture<WriteResult> writeResultFrom = documentFrom.getReference().update("checkingBalance", balanceCurr);
+                    System.out.println("Updated current user's balance: " + balanceCurr);
+
+                }
+
+
+
+            }
+
+
+
+
+
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return "Error fetching users";
