@@ -1,5 +1,6 @@
 package com.ganugapati.mohammed.Banking.Application;
 
+import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import jakarta.servlet.http.HttpSession;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -255,11 +257,39 @@ public class FormController {
         model.addAttribute(type, balance);
     }
 
-
-
     @GetMapping("/transferMoney")
     public String goToTransferMoney(Model model){
         return "transferMoney";
+
+    }
+
+    @PostMapping("/swiftMint")
+    public String transferAcrossAccounts( @RequestParam String amount, @RequestParam String recipient) {
+        System.out.println("The code reached this place.");
+        Firestore db = FirestoreClient.getFirestore();
+
+        ArrayList<User> userList = new ArrayList<>();
+        CollectionReference users = db.collection("users");
+
+        // Get all documents in the users collection
+        ApiFuture<QuerySnapshot> querySnapshot = users.get();
+
+        try {
+            for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+                User user = document.toObject(User.class);
+                userList.add(user);
+            }
+            for (int i = 0;i < userList.size();i++){
+                System.out.print(userList.get(i).getName() + " ");
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return "Error fetching users";
+        }
+
+
+        // Now, userList contains all the users from the Firestore database
+        return "swiftMint";
     }
 
     @PostMapping("/transferUser")

@@ -6,10 +6,11 @@
 <body>
 <center>
     <!-- Display the personalized greeting -->
-    <h1>Hello</h1>
+    <h1>Swift Mint</h1>
 
     <!-- Form to navigate to the checking page -->
-    <form th:action="@{/swiftMint}" method="get">
+    <!--check this later -->
+    <form action="/swiftMint" method="post">
         <label for="amount">How much do you want to transfer?</label>
         <br>
         <br>
@@ -17,6 +18,7 @@
         <br>
         <br>
         <label for="recipient">Who do you want to transfer to?</label>
+        <br>
         <br>
         <input type="text" id="recipient" name="recipient" required />
         <br>
