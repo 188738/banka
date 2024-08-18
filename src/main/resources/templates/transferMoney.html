@@ -93,8 +93,8 @@
 
         <script>
             function updateOptions() {
-                var fromAccount = document.getElementById("account").value;
-                var toAccount = document.getElementById("accountA");
+                var fromAccount = document.getElementById("accountFrom").value;
+                var toAccount = document.getElementById("accountTo");
 
                 // Enable both options by default
                 toAccount.querySelectorAll('option').forEach(function(option) {
@@ -102,10 +102,10 @@
                 });
 
                 // Disable the selected option in the second dropdown
-                if (fromAccount === "savings") {
-                    toAccount.querySelector('option[value="savings"]').disabled = true;
-                } else if (fromAccount === "checking") {
-                    toAccount.querySelector('option[value="checking"]').disabled = true;
+                if (fromAccount === "savingBalance") {
+                    toAccount.querySelector('option[value="savingBalance"]').disabled = true;
+                } else if (fromAccount === "checkingBalance") {
+                    toAccount.querySelector('option[value="checkingBalance"]').disabled = true;
                 }
             }
         </script>
