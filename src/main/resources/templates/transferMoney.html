@@ -67,22 +67,21 @@
     <br>
     <br>
     <center>
-        // add action
         <h4>Which account would you like to transfer from?</h4>
-        <form>
-            <label for="account">Select Account:</label>
-            <select id="account" name="accountFrom" required onchange="updateOptions()">
+        <form action="/transferUser" method="post">
+            <label for="accountFrom">Select Account:</label>
+            <select id="accountFrom" name="accountFrom" required onchange="updateOptions()">
                 <option value="">--Select an account--</option>
-                <option value="savings">Savings</option>
-                <option value="checking">Checking</option>
+                <option value="savingBalance">Savings</option>
+                <option value="checkingBalance">Checking</option>
             </select><br><br>
 
             <h4>Which account would you like to transfer to?</h4>
-            <label for="accountA">Select Account:</label>
-            <select id="accountA" name="accountTo" required>
+            <label for="accountTo">Select Account:</label>
+            <select id="accountTo" name="accountTo" required>
                 <option value="">--Select an account--</option>
-                <option value="savings">Savings</option>
-                <option value="checking">Checking</option>
+                <option value="savingBalance">Savings</option>
+                <option value="checkingBalance">Checking</option>
             </select><br><br>
 
             <h4>Enter Amount to Transfer</h4>

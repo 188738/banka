@@ -257,6 +257,62 @@ public class FormController {
         return "transferMoney";
     }
 
+    @PostMapping("/transferUser")
+    public String transferUserMoney(@RequestParam String accountFrom, @RequestParam String accountTo, @RequestParam double amount, HttpSession session) {
+        System.out.println("code reached transfer user function");
+        handleTransferUser(session, amount, accountFrom, accountTo);
+        return "transferMoney";
+    }
+
+    // Specific helper for the same user
+    private void handleTransferUser(HttpSession session, double transferAmount, String accountFrom, String accountTo) {
+        double balanceA = 0.0;
+        System.out.println("helper function has been reached");
+        double balanceB = 0.0;
+        Firestore db = FirestoreClient.getFirestore();
+        String name = (String) session.getAttribute("name");
+        System.out.println("successful session attribute stuff");
+
+        try {
+            DocumentSnapshot document = db.collection("users")
+                    .whereEqualTo("name", name)
+                    .get()
+                    .get()
+                    .getDocuments()
+                    .stream()
+                    .findFirst()
+                    .orElse(null);
+            System.out.println("query is successful");
+            if (document != null && document.exists()) {
+                System.out.println(accountFrom);
+                System.out.println(accountTo);
+                balanceA = document.getDouble(accountFrom);
+                System.out.println("Account From is $" + balanceA);
+                balanceB = document.getDouble(accountTo);
+                System.out.println("Account To is $" + balanceB);
+                // update if the transfer is not greater than the current balance
+
+                if (transferAmount > 0 && transferAmount < balanceA) {
+                    balanceA -= transferAmount;
+                    balanceB += transferAmount;
+                    db.collection("users").document(document.getId())
+                            .update(accountFrom, balanceA);
+                    db.collection("users").document(document.getId())
+                            .update(accountTo, balanceB);
+                }
+
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+
+
 
     private void postToFirestore(String name, int pin)
     {
