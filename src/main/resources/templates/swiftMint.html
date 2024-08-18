@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Swift Mint Transactions</title>
+</head>
+<body>
+<center>
+    <!-- Display the personalized greeting -->
+    <h1>Hello</h1>
+
+    <!-- Form to navigate to the checking page -->
+    <form th:action="@{/swiftMint}" method="get">
+        <label for="amount">How much do you want to transfer?</label>
+        <br>
+        <br>
+        <input type="number" id="amount" name="amount" required />
+        <br>
+        <br>
+        <label for="recipient">Who do you want to transfer to?</label>
+        <br>
+        <input type="text" id="recipient" name="recipient" required />
+        <br>
+        <button type="submit" style="margin-top: 10px;">Transfer</button>
+    </form>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <form th:action="@{/transferMoney}" method="get">
+        <input type="submit" value="back">
+    </form>
+</center>
+</body>
+</html>

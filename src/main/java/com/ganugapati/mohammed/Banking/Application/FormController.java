@@ -23,6 +23,11 @@ public class FormController {
         return "form"; // This corresponds to form.html
     }
 
+    @GetMapping("/swiftMint")
+    public String swiftMint(Model model){
+        return "swiftMint";
+    }
+
     @PostMapping("/submit")
     public String submitForm(@RequestParam String name, @RequestParam String pin, Model model)
     {
