@@ -67,7 +67,56 @@
     <br>
     <br>
     <center>
-        <h2>Which account would you like to transfer from?</h2>
+        // add action
+        <h4>Which account would you like to transfer from?</h4>
+        <form>
+            <label for="account">Select Account:</label>
+            <select id="account" name="accountFrom" required onchange="updateOptions()">
+                <option value="">--Select an account--</option>
+                <option value="savings">Savings</option>
+                <option value="checking">Checking</option>
+            </select><br><br>
+
+            <h4>Which account would you like to transfer to?</h4>
+            <label for="accountA">Select Account:</label>
+            <select id="accountA" name="accountTo" required>
+                <option value="">--Select an account--</option>
+                <option value="savings">Savings</option>
+                <option value="checking">Checking</option>
+            </select><br><br>
+
+            <h4>Enter Amount to Transfer</h4>
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" min="0" step="0.01" required><br><br>
+
+            <input type="submit" value="Submit">
+        </form>
+
+        <script>
+            function updateOptions() {
+                var fromAccount = document.getElementById("account").value;
+                var toAccount = document.getElementById("accountA");
+
+                // Enable both options by default
+                toAccount.querySelectorAll('option').forEach(function(option) {
+                    option.disabled = false;
+                });
+
+                // Disable the selected option in the second dropdown
+                if (fromAccount === "savings") {
+                    toAccount.querySelector('option[value="savings"]').disabled = true;
+                } else if (fromAccount === "checking") {
+                    toAccount.querySelector('option[value="checking"]').disabled = true;
+                }
+            }
+        </script>
+
+
+
+
+
+
+
     </center>
     <form>
 

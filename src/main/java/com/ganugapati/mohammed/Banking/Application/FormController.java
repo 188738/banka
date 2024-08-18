@@ -1,7 +1,5 @@
 package com.ganugapati.mohammed.Banking.Application;
 
-import com.google.api.Http;
-import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import jakarta.servlet.http.HttpSession;
@@ -11,10 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -214,8 +209,6 @@ public class FormController {
         handleWithdrawal(session, model, amount, "savingBalance"); // Deposit amount and update balance
         return "savings";
     }
-
-
 
 
     private void handleWithdrawal(HttpSession session, Model model, double withdrawalAmount, String type) {
