@@ -257,6 +257,11 @@ public class FormController {
         model.addAttribute(type, balance);
     }
 
+    @GetMapping("/form")
+    public String goToRegister(Model model){
+        return "form";
+    }
+
     @GetMapping("/transferMoney")
     public String goToTransferMoney(Model model){
         return "transferMoney";
