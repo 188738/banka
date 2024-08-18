@@ -39,10 +39,47 @@
         .content {
             padding: 60px 20px;
             /* Add padding to ensure content is not hidden behind the navbar */
+            display: flex;
+            justify-content: space-between;
         }
 
         h1 {
             text-align: center;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 65px;
+        }
+
+        .form-container form {
+            width: 300px; /* Adjust width as needed */
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: right; /* Ensure all text aligns to the right */
+        }
+
+        .left-form-container {
+            display: flex;
+            justify-content: flex-start;
+            margin-left: 20px; /* Add some left margin if needed */
+        }
+
+        .left-form-container form {
+            width: 300px; /* Adjust width as needed */
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left; /* Ensure all text aligns to the left */
+        }
+
+        form label, form select, form input {
+            width: 100%;
+            text-align: left;
         }
     </style>
 </head>
@@ -60,15 +97,20 @@
 <h1>Hello, <span th:text="${session.name}"></span>!</h1>
 
 <div class="content">
-    <h1>
-        Transfer Money
-    </h1>
-    <br>
-    <br>
-    <br>
-    <center>
-        <h4>Which account would you like to transfer from?</h4>
+    <div class="left-form-container">
+
+        <form th:action="@{/swiftMint}" method="get">
+            <label>Would you like to send money via SwiftMint?</label>
+            <br>
+            <br>
+            <input type="submit" value="Send Money">
+        </form>
+    </div>
+
+    <!-- Existing form on the right -->
+    <div class="form-container">
         <form action="/transferUser" method="post">
+            <h4>Which account would you like to transfer from?</h4>
             <label for="accountFrom">Select Account:</label>
             <select id="accountFrom" name="accountFrom" required onchange="updateOptions()">
                 <option value="">--Select an account--</option>
@@ -90,39 +132,27 @@
 
             <input type="submit" value="Submit">
         </form>
-
-        <script>
-            function updateOptions() {
-                var fromAccount = document.getElementById("accountFrom").value;
-                var toAccount = document.getElementById("accountTo");
-
-                // Enable both options by default
-                toAccount.querySelectorAll('option').forEach(function(option) {
-                    option.disabled = false;
-                });
-
-                // Disable the selected option in the second dropdown
-                if (fromAccount === "savingBalance") {
-                    toAccount.querySelector('option[value="savingBalance"]').disabled = true;
-                } else if (fromAccount === "checkingBalance") {
-                    toAccount.querySelector('option[value="checkingBalance"]').disabled = true;
-                }
-            }
-        </script>
-
-
-
-
-
-
-
-    </center>
-    <form>
-
-    </form>
-
-
+    </div>
 </div>
+
+<script>
+    function updateOptions() {
+        var fromAccount = document.getElementById("accountFrom").value;
+        var toAccount = document.getElementById("accountTo");
+
+        // Enable both options by default
+        toAccount.querySelectorAll('option').forEach(function(option) {
+            option.disabled = false;
+        });
+
+        // Disable the selected option in the second dropdown
+        if (fromAccount === "savingBalance") {
+            toAccount.querySelector('option[value="savingBalance"]').disabled = true;
+        } else if (fromAccount === "checkingBalance") {
+            toAccount.querySelector('option[value="checkingBalance"]').disabled = true;
+        }
+    }
+</script>
 
 </body>
 </html>
