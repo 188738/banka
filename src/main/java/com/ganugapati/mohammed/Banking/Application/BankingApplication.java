@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
+// dummy comment
 @SpringBootApplication
 public class BankingApplication {
 
