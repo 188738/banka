@@ -30,6 +30,11 @@ public class FormController {
         return "swiftMint";
     }
 
+    @GetMapping("/investment")
+    public String investment(Model model){
+        return "investment";
+    }
+
     @PostMapping("/submit")
     public String submitForm(@RequestParam String name, @RequestParam String pin, Model model)
     {
