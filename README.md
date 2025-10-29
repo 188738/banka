@@ -1,4 +1,4 @@
-# banka
+# SwiftMint Banking Application
 
 
 ## Use when building gradle 
